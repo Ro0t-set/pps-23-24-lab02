@@ -1,0 +1,135 @@
+package task02
+
+import org.junit.Test
+import org.junit.Assert._
+import task02.Main._
+
+class MainTest {
+
+  // Test cases for getTheSignMethodStyle
+  @Test def testGetTheSignMethodStyle(): Unit = {
+    assertEquals("positive", getTheSignMethodStyle(5))
+    assertEquals("negative", getTheSignMethodStyle(-5))
+    assertEquals("positive", getTheSignMethodStyle(0))
+  }
+
+  // Test cases for getTheSignLambdaStyle
+  @Test def testGetTheSignLambdaStyle(): Unit = {
+    assertEquals("positive", getTheSignLambdaStyle(5))
+    assertEquals("negative", getTheSignLambdaStyle(-5))
+    assertEquals("positive", getTheSignLambdaStyle(0))
+  }
+
+  // Test cases for negMethodStyle
+  @Test def testNegMethodStyle(): Unit = {
+    val empty: String => Boolean = _ == ""
+    val notEmpty = negMethodStyle(empty)
+    assertTrue(notEmpty("foo"))
+    assertFalse(notEmpty(""))
+  }
+
+  // Test cases for negLambdaStyle
+  @Test def testNegLambdaStyle(): Unit = {
+    val empty: String => Boolean = _ == ""
+    val notEmpty = negLambdaStyle(empty)
+    assertTrue(notEmpty("foo"))
+    assertFalse(notEmpty(""))
+  }
+
+  // Test cases for negMethodStyleGeneric
+  @Test def testNegMethodStyleGeneric(): Unit = {
+    val isEven: Int => Boolean = _ % 2 == 0
+    val isOdd = negMethodStyleGeneric(isEven)
+    assertTrue(isOdd(3))
+    assertFalse(isOdd(4))
+  }
+
+  // Test cases for xyzStandard
+  @Test def testXyzStandard(): Unit = {
+    assertTrue(xyzStandard(1, 1, 1))
+    assertFalse(xyzStandard(1, 2, 3))
+  }
+
+  // Test cases for xyzCurryed
+  @Test def testXyzCurryed(): Unit = {
+    assertTrue(xyzCurryed(1)(1)(1))
+    assertFalse(xyzCurryed(1)(2)(3))
+  }
+
+  // Test cases for xyzLambdaStandard
+  @Test def testXyzLambdaStandard(): Unit = {
+    assertTrue(xyzLambdaStandard(1, 1, 1))
+    assertFalse(xyzLambdaStandard(1, 2, 3))
+  }
+
+  // Test cases for xyzLambdaCurryed
+  @Test def testXyzLambdaCurryed(): Unit = {
+    assertTrue(xyzLambdaCurryed(1)(1)(1))
+    assertFalse(xyzLambdaCurryed(1)(2)(3))
+  }
+
+  // Test cases for compose
+  @Test def testCompose(): Unit = {
+    val f: Int => Int = _ - 1
+    val g: Int => Int = _ * 2
+    assertEquals(9, compose(f, g)(5))
+  }
+
+  // Test cases for genericCompose
+  @Test def testGenericCompose(): Unit = {
+    val f: String => Int = _.length
+    val g: Int => String = _.toString
+    assertEquals(5, genericCompose(f, g)("hello"))
+  }
+
+  // Test cases for gcd
+  @Test def testGcd(): Unit = {
+    assertEquals(4, gcd(12, 8))
+    assertEquals(7, gcd(14, 7))
+  }
+
+  // Test cases for Shape
+  @Test def testShape(): Unit = {
+    val rectangle = Shape.Rectangle(2, 3)
+    val circle = Shape.Circle(5)
+    val square = Shape.Square(4)
+
+    assertEquals(10, Shape.perimeter(rectangle), 0.01)
+    assertEquals(31.42, Shape.perimeter(circle), 0.01)
+    assertEquals(16, Shape.perimeter(square), 0.01)
+
+    val scaledRectangle = Shape.scale(rectangle, 2)
+    val scaledCircle = Shape.scale(circle, 0.5)
+    val scaledSquare = Shape.scale(square, 1.5)
+
+    assertEquals(20, Shape.perimeter(scaledRectangle), 0.01)
+    assertEquals(15.71, Shape.perimeter(scaledCircle), 0.01)
+    assertEquals(24, Shape.perimeter(scaledSquare), 0.01)
+  }
+
+  // Test cases for Optional
+  @Test def testOptional(): Unit = {
+    val maybeValue: Optional[Int] = Optional.Maybe(5)
+    val emptyValue: Optional[Int] = Optional.Empty()
+
+    assertTrue(Optional.isEmpty(emptyValue))
+    assertFalse(Optional.isEmpty(maybeValue))
+
+    assertEquals(5, Optional.orElse(maybeValue, 10))
+    assertEquals(10, Optional.orElse(emptyValue, 10))
+
+    val mappedMaybe = Optional.map(maybeValue)(_ > 2)
+    val mappedEmpty = Optional.map(emptyValue)(_ > 2)
+
+    assertTrue(Optional.isEmpty(mappedEmpty))
+    assertTrue(mappedMaybe == Optional.Maybe(true))
+
+    val filteredMaybe1 = Optional.filter(maybeValue)(_ > 2)
+    val filteredMaybe2 = Optional.filter(maybeValue)(_ > 8)
+    val filteredEmpty = Optional.filter(emptyValue)(_ > 2)
+
+    assertTrue(filteredMaybe1 == Optional.Maybe(5))
+    assertTrue(Optional.isEmpty(filteredMaybe2))
+    assertTrue(Optional.isEmpty(filteredEmpty))
+  }
+}
