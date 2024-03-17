@@ -47,11 +47,16 @@ object Main extends App:
 // Implement a predicate that checks whether its arguments x,y,z respect
 // the relation x ≤ y = z, in 4 variants (curried/non-curried × val/def)
 
-    def xyzStandard(x: Double, y: Double, z: Double): Boolean = x <= y || y == z 
+    def xyzStandard(x: Double, y: Double, z: Double): Boolean = x <= y && y == z 
 
-    def xyzCurryed(x: Double) (y: Double) (z: Double): Boolean = x <= y || y == z 
+    def xyzCurryed(x: Double) (y: Double) (z: Double): Boolean = x <= y && y == z 
 
-    val xyzLambdaCurryed: Double => Double => Double => Boolean = x => y => z => x <= y || y == z 
+
+    val xyzLambdaStandard: (Double, Double, Double) => Boolean = (x, y, z) => x <= y && y == z
+
+    val xyzLambdaCurryed: Double => Double => Double => Boolean = x => y => z => x <= y && y == z 
+
+    
 
 
 
