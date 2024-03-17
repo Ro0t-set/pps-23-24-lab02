@@ -107,3 +107,38 @@ object Main extends App:
       case Rectangle(w, h) => Rectangle(w * alpha, h * alpha)
       case Circle(r)       => Circle(r * alpha)
       case Square(l)       => Square(l * alpha)
+
+// 8. Look at tasks5.Optionals:
+// ▶ This follows the concept of Java Optional but with an ADT
+// approach, therefore describing the Optional with two cases: Maybe[A](value: A): the value is present
+// Empty() : the value is not present
+// ▶ Look at the implementation and the tests
+// ▶ Implement map: a function that transform the value (if present)– for
+// more details look at the tests
+//         map(Maybe(5))(_ > 2) // Maybe(true)
+// map(Empty())(_ > 2) // Empty
+// ▶ filter: a function that keeps the value (if present, otherwise the output
+// is None) only if it satisfies the given predicate. filter(Maybe(5))(_ > 2) // Maybe(5) filter(Maybe(5))(_ > 8) // Empty filter(Empty())(_ > 2) // Empty
+// The signature can be straightforwardly guessed by the examples.
+
+  enum Optional[A]:
+    case Maybe(value: A)
+    case Empty()
+
+  object Optional:
+
+    def isEmpty[A](o: Optional[A]): Boolean = o match
+      case Empty() => true
+      case _       => false
+
+    def orElse[A, B >: A](o: Optional[A], default: B): B = o match
+      case Maybe(v) => v
+      case _        => default
+
+    def map[A, B](o: Optional[A])(f: A => B): Optional[B] = o match
+      case Maybe(v) => Maybe(f(v))
+      case _        => Empty()
+
+    def filter[A](o: Optional[A])(f: A => Boolean): Optional[A] = o match
+      case Maybe(v) if (f(v)) => Maybe(v)
+      case _                  => Empty()
