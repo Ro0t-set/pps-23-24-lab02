@@ -57,11 +57,15 @@ object Main extends App:
     val xyzLambdaCurryed: Double => Double => Double => Boolean = x => y => z => x <= y && y == z 
 
     
+//5)
+//Create a function that implements functional compositions (f ◦ g)(x) = f (g(x))
+// ▶ Signature: compose(f: Int => Int, g: Int => Int): Int => Int ▶ Example: compose(_ - 1, _ * 2)(5) // 9
+// ▶ Create a generic version of compose
+// What signature? Is there any constraint?
 
-
-
-
-
+    def compose(f: Int => Int, g: Int => Int): Int => Int = i => f(g(i))
+    
+    def genericCompose[A, B, C](f: B => C, g: A => B): A => C = i => f(g(i))
 
 
 
